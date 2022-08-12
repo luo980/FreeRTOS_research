@@ -1,5 +1,7 @@
 # ESP-IDF FreeRTOS(SMP)
 
+[TOC]
+
 > 本文假设读者有对Vanilla FreeRTOS有足够的认识（特性，行为和API使用）
 
 这篇文章描述了ESP-IDF和Vanilla FreeRTOS之间API和行为的区别，用于支持对称多处理（SMP）方面。
