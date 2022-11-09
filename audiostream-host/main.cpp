@@ -29,7 +29,7 @@ int main()
     buffer_size = mpg123_outblock(mh);
     buffer = (unsigned char *)malloc(buffer_size * sizeof(unsigned char));
 
-    mpg123_open(mh, "./test.mp3");
+    mpg123_open(mh, "./test2.mp3");
     mpg123_getformat(mh, &rate, &channels, &encoding);
 
     std::cout << "rate is " << rate << ","
@@ -47,17 +47,17 @@ int main()
     unsigned int counter = 0;
     std::cout << "Get buffer size " << buffer_size << std::endl;
 
-    buffer_size = 480;
-    unsigned char data[200][480] = {0};
+    buffer_size = 441;
+    unsigned char data[200][441] = {0};
     int max_payload_bytes = MAX_PACKET;
     int len_opus[4000] = {0};
     // int frame_duration_ms = 2.5;
-    int sample_rate = 48000;
+    int sample_rate = 44100;
     int frame_size = sample_rate / 1000;
     unsigned char cbits[MAX_PACKET_SIZE];
     unsigned char *cbits_vtmp = cbits;
 
-    OpusEncoder *enc = encoder_init(48000, 2, OPUS_APPLICATION_AUDIO);
+    OpusEncoder *enc = encoder_init(44100, 2, OPUS_APPLICATION_AUDIO);
     // decoding to buffer address with buffersize, one frame size.
     for (int totalBtyes = 0; (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK) && (counter < 4000);)
     {
@@ -73,7 +73,7 @@ int main()
         ao_play(player, (char *)buffer, buffer_size);
         totalBtyes += done;
 
-        len_opus[counter] = opus_encode(enc, (opus_int16*)buffer, 480, cbits_vtmp, MAX_PACKET_SIZE);
+        len_opus[counter] = opus_encode(enc, (opus_int16*)buffer, 441, cbits_vtmp, MAX_PACKET_SIZE);
         if (len_opus[counter] < 0){
             std::cout << "failed to encode: " << opus_strerror(len_opus[counter]) << std::endl;
         }
@@ -140,7 +140,7 @@ ao_device *ao_driver_init()
     memset(&format, 0, sizeof(format));
     format.bits = 16;
     format.channels = 2;
-    format.rate = 48000;
+    format.rate = 44100;
     format.byte_format = AO_FMT_LITTLE;
 
     device = ao_open_live(default_driver, &format, NULL /* no options */);
